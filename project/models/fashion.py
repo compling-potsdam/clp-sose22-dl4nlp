@@ -1,3 +1,5 @@
+import os.path
+
 import torch
 from torch import nn
 from torch.utils.data import DataLoader
@@ -74,9 +76,9 @@ def epoch_test(dataloader, model, loss_fn, device):
     print(f"Test Error: \n Accuracy: {(100 * correct):>0.1f}%, Avg loss: {test_loss:>8f} \n")
 
 
-def perform_training(epochs=3, batch_size=64):
-    training_data = datasets.FashionMNIST(root="data", train=True, download=True, transform=ToTensor())
-    test_data = datasets.FashionMNIST(root="data", train=False, download=True, transform=ToTensor())
+def perform_training(data_dir, ckpts_dir, epochs=3, batch_size=64):
+    training_data = datasets.FashionMNIST(root=data_dir, train=True, download=True, transform=ToTensor())
+    test_data = datasets.FashionMNIST(root=data_dir, train=False, download=True, transform=ToTensor())
 
     train_dataloader = DataLoader(training_data, batch_size=batch_size, shuffle=True)
     test_dataloader = DataLoader(test_data, batch_size=batch_size, shuffle=False)
@@ -97,16 +99,16 @@ def perform_training(epochs=3, batch_size=64):
     print("Done!")
 
     # Save checkpoints via PyTorch
-    torch.save(model.state_dict(), "model.pth")
+    torch.save(model.state_dict(), os.path.join(ckpts_dir, "model.pth"))
     print("Saved PyTorch Model State to model.pth")
 
 
-def perform_prediction():
-    test_data = datasets.FashionMNIST(root="data", train=False, download=True, transform=ToTensor())
+def perform_prediction(data_dir, ckpts_dir):
+    test_data = datasets.FashionMNIST(root=data_dir, train=False, download=True, transform=ToTensor())
 
     # Load checkpoints via PyTorch
     model = NeuralNetwork()
-    model.load_state_dict(torch.load("model.pth"))
+    model.load_state_dict(torch.load(os.path.join(ckpts_dir, "model.pth")))
 
     classes = [
         "T-shirt/top",
