@@ -14,10 +14,10 @@ Install requirements
  pip install -r requirements.txt
 ```
 
-You can run the lightning scripts directly.
+You can run the lightning scripts directly and have a look at the tensorboard logs.
 
 ```
- tensorboard --logdir logs
+ tensorboard --logdir <path-to-logs>
 ```
 
 ### CLI
@@ -31,13 +31,13 @@ pip install . -U
 Then you can then use the CLI to train:
 
 ```
-dl4nlp-pytorch-training
+dl4nlp-pytorch-training -d <path-to-data> -l <path-to-logs>
 ```
 
 and to predict
 
 ```
-dl4nlp-pytorch-predict
+dl4nlp-pytorch-predict -d <path-to-data> -l <path-to-logs>
 ```
 
-Note: The model checkpoint is simply saved to the directory where you invoke the CLI.
+Note: The model checkpoint is saved to the logs directory. You might want to adjust the defaults.
