@@ -45,7 +45,7 @@ class LitNeuralNetwork(pl.LightningModule):
             self.val_data = datasets.FashionMNIST(root=self.data_dir, train=False, transform=ToTensor())
 
     def configure_optimizers(self):
-        optimizer = torch.optim.SGD(model.parameters(), lr=1e-3, weight_decay=1e-6)
+        optimizer = torch.optim.SGD(model.parameters(), lr=1e-2, weight_decay=1e-6)
         scheduler = StepLR(optimizer, step_size=1, gamma=0.1)
         return [optimizer], [scheduler]
 
@@ -58,6 +58,7 @@ class LitNeuralNetwork(pl.LightningModule):
         x, y = batch[0], batch[1]
         logits = model(x)
         loss = F.cross_entropy(logits, y)
+        self.log("train/loss", loss)
         return loss
 
     def validation_step(self, batch, batch_idx):
@@ -66,12 +67,10 @@ class LitNeuralNetwork(pl.LightningModule):
         loss = F.cross_entropy(logits, y)
         predictions = torch.argmax(logits, dim=1)  # B x V x L -> B x L
         self.accuracy.update(predictions, y)
-        return loss
+        self.log("val/loss", loss, on_epoch=True)
 
     def validation_epoch_end(self, step_outputs) -> None:
-        # step_or_epoch = self.global_step
-        step_or_epoch = self.current_epoch + 1
-        self.log_dict({"step": step_or_epoch, "val/acc": self.accuracy.compute()})
+        self.log_dict({"step": self.current_epoch + 1, "val/acc": self.accuracy.compute()})
 
     def train_dataloader(self):
         return DataLoader(self.train_data, batch_size=self.hparams.batch_size, shuffle=True, num_workers=0)
