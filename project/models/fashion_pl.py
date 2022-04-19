@@ -126,7 +126,7 @@ if __name__ == "__main__":
                                             # max_steps=10,
                                             log_every_n_steps=1,  # step = batch
                                             logger=tb_logger,
-                                            val_check_interval=.2,  # perform validation more often
+                                            val_check_interval=.5,  # perform validation more often (50% of batches)
                                             weights_save_path=args.ckpts_root,
                                             gradient_clip_val=10
                                             )

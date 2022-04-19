@@ -4,7 +4,7 @@ from project.models.fashion import perform_training
 
 
 @click.command()
-@click.option("-d", '--epochs', type=str, default="/Users/philippsadler/Opts/Git/clp-sose22-dl4nlp/data")
+@click.option("-d", '--data_dir', type=str, default="/Users/philippsadler/Opts/Git/clp-sose22-dl4nlp/data")
 @click.option("-l", '--ckpts_dir', type=str, default="/Users/philippsadler/Opts/Git/clp-sose22-dl4nlp/logs")
 @click.option("-e", '--epochs', type=int, default=3)
 @click.option("-b", '--batch_size', type=int, default=64)

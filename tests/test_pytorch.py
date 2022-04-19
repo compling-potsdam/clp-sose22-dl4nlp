@@ -1,6 +1,6 @@
 import unittest
 
-from project.models.pytorch import perform_training
+from project.models.fashion import perform_training
 
 
 class MyTestCase(unittest.TestCase):
